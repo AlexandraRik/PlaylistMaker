@@ -5,22 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#3772E7"
-    android:paddingLeft="12dp"
-    android:paddingTop="10dp">
+    android:background="@color/blue"
+    android:paddingTop="@dimen/top_padding"
+    android:paddingLeft="@dimen/edges_padding">
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp">
+        android:paddingTop="@dimen/top_padding">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:text="Playlist maker"
-        android:textColor="#ffffff"
-        android:textSize="26sp" />
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size" />
     </FrameLayout>
 
     <LinearLayout
@@ -30,7 +31,8 @@
         android:layout_marginBottom="28dp"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_marginHorizontal="16dp">
+        android:paddingRight="@dimen/edges_padding"
+        >
 
 
 
@@ -41,10 +43,14 @@
             android:layout_height="0dp"
             android:layout_weight="5"
             android:layout_gravity="top"
-            android:backgroundTint="#ffffff"
-            android:text="Поиск"
-            android:textColor="#1A1B22"
-            app:cornerRadius="16dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/search_name"
+            android:textColor="@color/text"
+            app:cornerRadius="@dimen/corner_radius"
+            app:icon = "@drawable/search_1"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/black"
            />
 
         <com.google.android.material.button.MaterialButton
@@ -53,10 +59,14 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="start"
             android:layout_weight="5"
-            android:backgroundTint="#ffffff"
-            android:text="Медиатека"
-            android:textColor="#1A1B22"
-            app:cornerRadius="16dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/media_name"
+            android:textColor="@color/text"
+            app:cornerRadius="@dimen/corner_radius"
+            app:icon = "@drawable/media2"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/black"
             />
 
         <com.google.android.material.button.MaterialButton
@@ -65,10 +75,14 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="end"
             android:layout_weight="5"
-            android:backgroundTint="#ffffff"
-            android:text="Настройки"
-            android:textColor="#1A1B22"
-            app:cornerRadius="16dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/confguration_name"
+            android:textColor="@color/text"
+            app:cornerRadius="@dimen/corner_radius"
+            app:icon = "@drawable/configure_3"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/black"
             />
 
 
