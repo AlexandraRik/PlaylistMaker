@@ -56,13 +56,13 @@
         <Switch
             android:id="@+id/switch_off"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="48dp"
             android:layout_gravity="end"
             android:checked="false"
             android:gravity="left" />
 
 
-        />
+
 
 
     </LinearLayout>
