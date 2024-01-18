@@ -39,6 +39,7 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/search_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
@@ -54,6 +55,7 @@
            />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/media_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
@@ -70,6 +72,7 @@
             />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/configuration_button"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
