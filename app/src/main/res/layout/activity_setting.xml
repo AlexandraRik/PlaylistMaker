@@ -37,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginTop_setting"
         android:orientation="horizontal"
-        android:paddingStart="@dimen/edges_padding_setting"
-        android:paddingEnd="@dimen/edges_padding_setting"
+        android:paddingLeft="@dimen/edges_padding_setting"
+        android:paddingRight="@dimen/edges_padding_setting"
 
         >
 
