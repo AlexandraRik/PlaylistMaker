@@ -13,20 +13,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_gravity="top"
-            android:backgroundTint="@color/white"
-            android:text="@string/confguration_name"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:textSize="@dimen/text_size"
-            app:icon="@drawable/back"
-            app:iconGravity="textStart"
-            app:iconPadding="12dp"
-            app:iconTint="@color/black" />
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/back"
+                app:iconGravity="textStart"
+                app:iconTint="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confguration_name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size"
+                android:paddingLeft="24dp"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
 
 
 

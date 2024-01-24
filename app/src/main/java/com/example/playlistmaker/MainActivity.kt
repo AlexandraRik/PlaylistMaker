@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         val buttonClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
-               // Toast.makeText(this@MainActivity, "Идут ремонтные работы...", Toast.LENGTH_LONG).show() //реализация появления сообщения тост через анонимный класс
+                //реализация появления сообщения тост через анонимный класс
                 val displayIntent = Intent(this@MainActivity, SearchActivity::class.java)
                 startActivity(displayIntent)
             }
@@ -30,13 +30,13 @@ class MainActivity : AppCompatActivity() {
         searchButton.setOnClickListener(buttonClickListener)
 
         mediaButton.setOnClickListener(){
-           // Toast.makeText(this@MainActivity, "Технические шоколадки!", Toast.LENGTH_SHORT).show()
+
             val displayIntent = Intent(this, MediaActivity::class.java)
             startActivity(displayIntent)
         }
 
         configureButton.setOnClickListener(){
-           // Toast.makeText(this@MainActivity, "Пришельцы украли реализацию кнопки", Toast.LENGTH_LONG).show()
+
             val displayIntent = Intent(this, SettingActivity::class.java)
             startActivity(displayIntent)
         }

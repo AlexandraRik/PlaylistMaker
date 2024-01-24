@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Идут ремонтные работы..."
+        android:text="@string/search_text"
         tools:ignore="MissingConstraints" />
 
 
