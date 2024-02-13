@@ -59,9 +59,11 @@
 
     </style>
 
-    <style name="TintColor"  parent="Widget.MaterialComponents.Toolbar">
-        <item name="iconTint">@color/white</item>
+    <style name="BackButtonColor">
+        <item name="android:src">@drawable/backnight</item>
     </style>
+
+
 
 
 </resources>

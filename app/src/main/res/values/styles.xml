@@ -64,8 +64,9 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="TintColor"  parent="Widget.MaterialComponents.Toolbar">
-        <item name="iconTint">@color/black</item>
+
+    <style name="BackButtonColor">
+        <item name="android:src">@drawable/back</item>
     </style>
 
 

@@ -7,6 +7,7 @@
     <dimen name="edges_padding_setting">12dp</dimen>
     <dimen name="marginTop_setting">27dp</dimen>19sp
     <dimen name="small_text_size">19sp</dimen>
+    <dimen name="Toolbardp">48dp</dimen>19sp
 
 
 
