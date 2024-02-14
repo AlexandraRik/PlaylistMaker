@@ -62,6 +62,11 @@
     <style name="BackButtonColor">
         <item name="android:src">@drawable/backnight</item>
     </style>
+    <style name="TextViewIcon">
+        <item name="android:drawableLeft">@drawable/search_1</item>
+        <item name="android:background"> @drawable/rounded_edittextnight</item>
+        <item name="android:textColorHint">@color/black</item>
+    </style>
 
 
 
