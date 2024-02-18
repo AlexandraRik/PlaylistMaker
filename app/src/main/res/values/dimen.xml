@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="edges_padding">16dp</dimen>
+    <dimen name="top_padding">10dp</dimen>
+    <dimen name="text_size">26sp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="edges_padding_setting">12dp</dimen>
+    <dimen name="marginTop_setting">27dp</dimen>19sp
+    <dimen name="small_text_size">19sp</dimen>
+
+
+
+</resources>
