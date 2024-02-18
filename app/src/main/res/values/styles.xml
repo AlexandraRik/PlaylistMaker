@@ -71,10 +71,23 @@
 
 
     <style name="TextViewIcon">
-        <item name="android:drawableLeft">@drawable/search_2</item>
+        <item name="android:drawableStart">@drawable/search_2</item>
         <item name="android:background"> @drawable/rounded_edittext</item>
         <item name="android:textColorHint">@color/gray</item>
+        <item name="android:drawablePadding">8dp</item>
+
     </style>
+
+
+
+
+
+    <style name="DeleteIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height"> wrap_content</item>
+        <item name="android:src">@drawable/delete</item>
+    </style>
+
 
 
 

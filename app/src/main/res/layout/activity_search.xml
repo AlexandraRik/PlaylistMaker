@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"
-        android:paddingRight= "20dp"
+
         >
 
 
@@ -42,36 +42,57 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar2"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
 
-        <EditText
-            android:id="@+id/editText"
-            style="@style/TextViewIcon"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:inputType="text"
-            android:hint=" Поиск"
-            android:lines="4"
-            android:drawableEnd="@drawable/delete"
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                >
 
 
+                <EditText
+                    android:id="@+id/editText"
+                    style="@style/TextViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="@string/searchHint"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:layout_gravity="top"
+                    />
 
-            />
+
+                <ImageView
+                    style="@style/DeleteIcon"
+                    android:id="@+id/clearIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:paddingStart="8dp"
+                    android:visibility="gone"
+
+                     />
 
 
-    </androidx.appcompat.widget.Toolbar>
+            </RelativeLayout>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
 
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
