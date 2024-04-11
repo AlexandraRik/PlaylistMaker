@@ -19,7 +19,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_gravity="top"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+           >
 
             <ImageView
                 style = "@style/BackButtonColor"
@@ -42,18 +43,14 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            >
 
-            <RelativeLayout
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="60dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
                 >
 
 
@@ -61,12 +58,14 @@
                     android:id="@+id/editText"
                     style="@style/TextViewIcon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:inputType="text"
                     android:hint="@string/searchHint"
                     android:lines="1"
                     android:textColor="@color/black"
-                    android:layout_gravity="top"
+                    android:singleLine="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
                     />
 
 
@@ -74,19 +73,18 @@
                     style="@style/DeleteIcon"
                     android:id="@+id/clearIcon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:paddingStart="8dp"
+                    android:layout_gravity="end|top"
+                    android:layout_height="36dp"
+                    android:padding="10dp"
                     android:visibility="gone"
+
 
                      />
 
 
-            </RelativeLayout>
+            </FrameLayout>
 
 
-        </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
 
 

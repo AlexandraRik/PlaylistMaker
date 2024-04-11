@@ -46,6 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/marginTop_setting"
+        android:layout_marginBottom="27dp"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/edges_padding_setting"
         android:paddingRight="@dimen/edges_padding_setting"
@@ -78,13 +79,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="@dimen/edges_padding_setting"
-        android:paddingRight="@dimen/edges_padding_setting">
+        android:paddingRight="@dimen/edges_padding_setting"
+        >
 
         <TextView
             android:id ="@+id/share_button"
             style="@style/SettingTextView"
             android:layout_width="match_parent"
             android:text="@string/share"
+            android:layout_marginBottom="27dp"
             android:drawableEnd="@drawable/share"
 
             />
@@ -93,6 +96,7 @@
             style="@style/SettingTextView"
             android:layout_width="match_parent"
             android:layout_marginTop="@dimen/marginTop_setting"
+            android:layout_marginBottom="27dp"
             android:text="@string/help"
             android:drawableEnd="@drawable/group"
 

@@ -37,9 +37,9 @@ class SettingActivity : AppCompatActivity() {
             val helpIntent = Intent(Intent.ACTION_SENDTO)
             helpIntent.data = Uri.parse("mailto:")
 
-            helpIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail))
-            helpIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.helpTopic)
-            helpIntent.putExtra(Intent.EXTRA_TEXT, R.string.helpMessage)
+            helpIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.mail)))
+            helpIntent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.helpTopic))
+            helpIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.helpMessage))
             startActivity(helpIntent)
 
         }
