@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -14,6 +15,8 @@ import android.widget.LinearLayout
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
+    private var editTextValue: String? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +34,16 @@ class SearchActivity : AppCompatActivity() {
             hideKeyboard()
             clearButton.visibility = View.GONE
         }
+        editTextValue = savedInstanceState?.getString(TEXT_VALUE_KEY)
+
+
+
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                editTextValue = s.toString()
                 if (s != null) {
                     if (s.isNotEmpty() && s.isNotBlank()) {
                         clearButton.visibility = View.VISIBLE
@@ -61,13 +69,13 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val text = inputEditText.text.toString()
-        outState.putString(TEXT_VALUE_KEY, text)
+       // val text = inputEditText.text.toString()
+        outState.putString(TEXT_VALUE_KEY, editTextValue)
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val textValue = savedInstanceState.getString(TEXT_VALUE_KEY)
-        inputEditText.setText(textValue)
+        //val textValue = savedInstanceState.getString(TEXT_VALUE_KEY)
+        inputEditText.setText(editTextValue)
     }
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
