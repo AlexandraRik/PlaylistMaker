@@ -11,11 +11,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
+    private lateinit var recyclerView: RecyclerView
     private var editTextValue: String? = null
+    private lateinit var trackAdapter: TrackAdapter
 
 
 
@@ -23,8 +27,16 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-         inputEditText = findViewById<EditText>(R.id.editText)
-         clearButton = findViewById<ImageView>(R.id.clearIcon)
+        inputEditText = findViewById<EditText>(R.id.editText)
+        clearButton = findViewById<ImageView>(R.id.clearIcon)
+        recyclerView = findViewById(R.id.recyclerView)
+
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        trackAdapter = TrackAdapter(TrackRepository.tracks)
+        recyclerView.adapter = trackAdapter
+
+
         val backButton = findViewById<ImageView>(R.id.back_button)
         backButton.setOnClickListener {
             super.onBackPressed()
@@ -58,6 +70,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         inputEditText.addTextChangedListener(simpleTextWatcher)
+
 
     }
 

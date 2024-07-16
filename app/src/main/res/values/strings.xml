@@ -16,6 +16,10 @@
     <string name="mail">rik.a1@yandex.ru</string>
     <string name="userAgreement">https://yandex.ru/legal/practicum_offer</string>
     <string name="searchHint">Поиск</string>
+    <string name="trackName">Track Name</string>
+    <string name="trackTime">Track Time</string>
+    <string name="trackAuthor">Artist Name</string>
+
 
 
 
