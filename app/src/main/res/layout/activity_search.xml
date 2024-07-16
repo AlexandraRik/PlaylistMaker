@@ -52,7 +52,7 @@
                 android:paddingRight="20dp"
                 android:paddingTop="5dp"
                 android:layout_gravity="center">
-                >
+
 
 
                 <EditText
