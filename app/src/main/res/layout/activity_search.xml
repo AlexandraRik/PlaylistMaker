@@ -6,14 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
 
-    <TextView
-        android:id="@+id/message"
+    <LinearLayout
+        style="@style/LinearLayoutStyleSetting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/search_text"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+
+        >
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_gravity="top"
+            android:layout_height="match_parent"
+           >
+
+            <ImageView
+                style = "@style/BackButtonColor"
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:iconGravity="textStart"
+                />
+
+            <TextView
+                style = "@style/SettingTextColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_name"
+                android:textSize="@dimen/text_size"
+                android:fontFamily = "@font/ys_text_medium"
+                android:paddingLeft="24dp"/>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp"
+                android:layout_gravity="center">
+
+
+
+                <EditText
+                    android:id="@+id/editText"
+                    style="@style/TextViewIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:inputType="text"
+                    android:hint="@string/searchHint"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:paddingStart="10dp"
+                    />
+
+
+                <ImageView
+                    style="@style/DeleteIcon"
+                    android:id="@+id/clearIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:padding="10dp"
+                    android:visibility="gone"
+
+
+                     />
+
+
+            </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/top_padding"
+            app:layout_constraintTop_toBottomOf="@id/editText"
+            android:padding="@dimen/padding"/>
+
+</LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+

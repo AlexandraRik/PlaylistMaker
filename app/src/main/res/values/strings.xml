@@ -9,5 +9,18 @@
     <string name="agreement">Пользовательское соглашение</string>
     <string name="media_text">Прищельцы украли реализацию кнопки</string>
     <string name="search_text">Идут ремонтные работы...</string>
+    <string name="share_app">https://practicum.yandex.ru/android-developer</string>
+    <string name="share_app_header">Делюсь приложением</string>
+    <string name="helpMessage">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="helpTopic">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mail">rik.a1@yandex.ru</string>
+    <string name="userAgreement">https://yandex.ru/legal/practicum_offer</string>
+    <string name="searchHint">Поиск</string>
+    <string name="trackName">Track Name</string>
+    <string name="trackTime">Track Time</string>
+    <string name="trackAuthor">Artist Name</string>
+
+
+
 
 </resources>
