@@ -19,6 +19,11 @@
     <string name="trackName">Track Name</string>
     <string name="trackTime">Track Time</string>
     <string name="trackAuthor">Artist Name</string>
+    <string name="noResultText">Ничего не нашлось</string>
+    <string name="errorMessage1">\t\ \t\ \t\ \t\ \t\ \t\ Проблемы со связью \n\ \n\Загрузка не удалась.  Проверьте \n\  \t\ \t\ подключение к интернету</string>
+    <string name="errorMessage2">Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="retry">Обновить</string>
+
 
 
 
