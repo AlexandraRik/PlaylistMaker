@@ -14,11 +14,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.RetrofitClient.retrofit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
@@ -33,10 +32,10 @@ class SearchActivity : AppCompatActivity() {
     private var editTextValue: String? = null
     private lateinit var trackAdapter: TrackAdapter
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://itunes.apple.com")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl("https://itunes.apple.com")
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
     private val songService = retrofit.create(SongApiService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +110,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
+        hidePlaceholders()
         songService.search(query).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
                 if (response.isSuccessful && response.body() != null) {
