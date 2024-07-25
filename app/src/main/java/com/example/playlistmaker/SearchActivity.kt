@@ -32,10 +32,6 @@ class SearchActivity : AppCompatActivity() {
     private var editTextValue: String? = null
     private lateinit var trackAdapter: TrackAdapter
 
-//    private val retrofit = Retrofit.Builder()
-//        .baseUrl("https://itunes.apple.com")
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
     private val songService = retrofit.create(SongApiService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
