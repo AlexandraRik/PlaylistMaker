@@ -3,11 +3,10 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class SettingActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -48,12 +47,6 @@ class SettingActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, url)
             startActivity(intent)
         }
-
-
-
-
-
-
 
 
     }
