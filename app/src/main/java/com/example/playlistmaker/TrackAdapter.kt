@@ -11,7 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackAdapter(private var trackList: List<Track>) :
+class TrackAdapter(private var trackList: List<Track>,val trackListener: TrackListener):
     RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
 
@@ -29,8 +29,13 @@ fun updateTracks(newTracks: List<Track>) {
         val track = trackList[position]
 
         holder.bind(track)
+        holder.itemView.setOnClickListener {
+            trackListener.onTrackClick(track)
+        }
 
     }
+
+
 
     override fun getItemCount(): Int = trackList.size
 
@@ -52,5 +57,8 @@ fun updateTracks(newTracks: List<Track>) {
                 .transform(RoundedCorners(2))
                 .into(trackImage)
         }
+    }
+    fun interface TrackListener {
+        fun onTrackClick(track: Track)
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -17,6 +18,10 @@ class SettingActivity : AppCompatActivity() {
         val shareButton = findViewById<TextView>(R.id.share_button)
         val helpButton = findViewById<TextView>(R.id.help_button)
         val userButton = findViewById<TextView>(R.id.user_button)
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch_off)
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener{ switcher, checked -> (applicationContext as App).switchTheme(checked) }
 
 
         backButton.setOnClickListener {
@@ -28,8 +33,6 @@ class SettingActivity : AppCompatActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-
-           // startActivity(Intent.createChooser(shareIntent, R.string.share_app_header.toString()))
             startActivity(shareIntent)
         }
         helpButton.setOnClickListener{
@@ -47,6 +50,7 @@ class SettingActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, url)
             startActivity(intent)
         }
+
 
 
     }

@@ -24,13 +24,17 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearButton: ImageView
     private lateinit var noResultsImage: ImageView
     private lateinit var noResultsText: TextView
+    private lateinit var historyLine: TextView
     private lateinit var errorImage: ImageView
     private lateinit var errorText1: TextView
     private lateinit var retryButton: Button
-
     private lateinit var recyclerView: RecyclerView
     private var editTextValue: String? = null
     private lateinit var trackAdapter: TrackAdapter
+    private lateinit var historyAdapter: TrackAdapter
+    private lateinit var searchHistory: SearchHistory
+    private lateinit var clearHistoryButton: Button
+    private lateinit var historyRecyclerView: RecyclerView
 
     private val songService = retrofit.create(SongApiService::class.java)
 
@@ -42,13 +46,32 @@ class SearchActivity : AppCompatActivity() {
         clearButton = findViewById(R.id.clearIcon)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        trackAdapter = TrackAdapter(emptyList())
+        trackAdapter = TrackAdapter(emptyList()) { track ->
+            onTrackClick(track)
+        }
         recyclerView.adapter = trackAdapter
+
+        historyRecyclerView = findViewById(R.id.historyRecyclerView)
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyAdapter = TrackAdapter(emptyList()) { track ->
+            onTrackClick(track) }
+        historyRecyclerView.adapter = historyAdapter
+
         noResultsImage = findViewById(R.id.noResultsImage)
         noResultsText = findViewById(R.id.noResultsText)
+        historyLine= findViewById(R.id.historyLine)
         errorImage = findViewById(R.id.errorImage)
         errorText1 = findViewById(R.id.errorText1)
         retryButton = findViewById(R.id.retryButton)
+        clearHistoryButton = findViewById(R.id.clearButton)
+        searchHistory = SearchHistory(getSharedPreferences("search_prefs", MODE_PRIVATE))
+        updateHistory()
+
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clearHistory()
+            updateHistory()
+            hideHistory()
+        }
 
         val backButton = findViewById<ImageView>(R.id.back_button)
         backButton.setOnClickListener {
@@ -69,12 +92,21 @@ class SearchActivity : AppCompatActivity() {
         }
 
         editTextValue = savedInstanceState?.getString(TEXT_VALUE_KEY)
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            updateHistoryVisibility()
+        }
 
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 editTextValue = s.toString()
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                if (s.isNullOrEmpty()) {
+                    updateHistoryVisibility()
+                } else {
+                    hideHistory()
+                }
+
             }
             override fun afterTextChanged(s: Editable?) {}
         }
@@ -89,6 +121,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun hideKeyboard() {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -116,7 +149,8 @@ class SearchActivity : AppCompatActivity() {
                             trackName = songResult.trackName,
                             artistName = songResult.artistName,
                             trackTime = songResult.trackTimeMillis,
-                            artworkUrl100 = songResult.artworkUrl100
+                            artworkUrl100 = songResult.artworkUrl100,
+                            trackId = songResult.trackId
                         )
                     }
                     if (tracks.isEmpty()) {
@@ -134,6 +168,7 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
+
 
 
     private fun showNoResultsMessage() {
@@ -159,11 +194,36 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility = View.VISIBLE
     }
 
+    private fun onTrackClick(track: Track) {
+        searchHistory.addTrack(track)
+        updateHistory()
+    }
+
+    private fun updateHistory() {
+        val history = searchHistory.getHistory()
+        historyAdapter.updateTracks(history)
+    }
+    private fun hideHistory() {
+        historyRecyclerView.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+        historyLine.visibility = View.GONE
+
+    }
+
+    private fun updateHistoryVisibility() {
+        val history = searchHistory.getHistory()
+        if (inputEditText.hasFocus() && inputEditText.text.isEmpty() && history.isNotEmpty()) {
+            historyLine.visibility = View.VISIBLE
+            historyRecyclerView.visibility = View.VISIBLE
+            clearHistoryButton.visibility = View.VISIBLE
+        } else {
+            hideHistory()
+        }
+    }
+
+
     companion object {
         const val TEXT_VALUE_KEY = "textValue"
     }
 
 }
-
-
-
