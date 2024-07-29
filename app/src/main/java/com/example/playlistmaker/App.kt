@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.app.Application
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
 class App: Application() {
@@ -13,9 +14,13 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        darkTheme = sharedPrefs.getBoolean("dark_theme", false)
+        if (sharedPrefs.contains("dark_theme")) {
+            darkTheme = sharedPrefs.getBoolean("dark_theme", false)
+        } else {
+            darkTheme = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            sharedPrefs.edit().putBoolean("dark_theme", darkTheme).apply()
+        }
         switchTheme(darkTheme)
-
     }
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled

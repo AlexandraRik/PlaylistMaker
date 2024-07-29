@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import SongModel.Result
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.RetrofitClient.retrofit
+import com.example.playlistmaker.SongModel.Result
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -103,6 +103,7 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
                 if (s.isNullOrEmpty()) {
                     updateHistoryVisibility()
+                    trackAdapter.updateTracks(emptyList())
                 } else {
                     hideHistory()
                 }

@@ -11,4 +11,8 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="gray">#AEAFB4</color>
     <color name="prime_neutral">#ffffff</color>
+    <color name="light_blue">#9FBBF3</color>
+    <color name="dark_gray">#818C99</color>
+
+
 </resources>

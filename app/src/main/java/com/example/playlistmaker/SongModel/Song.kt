@@ -1,4 +1,4 @@
-package SongModel
+package com.example.playlistmaker.SongModel
 
 import com.google.gson.annotations.SerializedName
 
