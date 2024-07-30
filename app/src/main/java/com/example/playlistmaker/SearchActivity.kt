@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -151,7 +152,12 @@ class SearchActivity : AppCompatActivity() {
                             artistName = songResult.artistName,
                             trackTime = songResult.trackTimeMillis,
                             artworkUrl100 = songResult.artworkUrl100,
-                            trackId = songResult.trackId
+                            trackId = songResult.trackId,
+                            collectionName = songResult.collectionName,
+                            releaseDate = songResult.releaseDate,
+                            primaryGenreName = songResult.primaryGenreName,
+                            country = songResult.country
+
                         )
                     }
                     if (tracks.isEmpty()) {
@@ -198,6 +204,9 @@ class SearchActivity : AppCompatActivity() {
     private fun onTrackClick(track: Track) {
         searchHistory.addTrack(track)
         updateHistory()
+        val displayIntent = Intent(this, PlayerActivity::class.java)
+        displayIntent.putExtra("track", track)
+        startActivity(displayIntent)
     }
 
     private fun updateHistory() {
