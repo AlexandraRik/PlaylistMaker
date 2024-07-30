@@ -23,9 +23,7 @@
     <string name="errorMessage1">\t\ \t\ \t\ \t\ \t\ \t\ Проблемы со связью \n\ \n\Загрузка не удалась.  Проверьте \n\  \t\ \t\ подключение к интернету</string>
     <string name="errorMessage2">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="retry">Обновить</string>
-
-
-
-
+    <string name="history_line">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
 
 </resources>

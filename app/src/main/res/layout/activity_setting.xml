@@ -55,20 +55,15 @@
 
         >
 
-        <TextView
-            style="@style/SettingTextView"
-            android:layout_width="wrap_content"
-            android:text="@string/dark_theme"
 
-            />
-
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_off"
+            style="@style/SettingTextView"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="end"
-            android:checked="false"
-            android:gravity="left" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/dark_theme"
+             />
 
 
 

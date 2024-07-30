@@ -11,6 +11,7 @@
     <dimen name="Toolbardp">48dp</dimen>
     <dimen name="imageView_layout">45dp</dimen>
     <dimen name="padding">20dp</dimen>
+    <dimen name="recyclePadding">16dp</dimen>
     <dimen name="track_text_size">11sp</dimen>
     <dimen name="trackName_text_size">16sp</dimen>
     <dimen name="placeHolder_marginTop">102dp</dimen>

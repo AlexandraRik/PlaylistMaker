@@ -1,6 +1,6 @@
 package com.example.playlistmaker
 
-import SongModel.Result
+import com.example.playlistmaker.SongModel.Result
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
