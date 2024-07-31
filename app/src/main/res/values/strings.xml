@@ -25,5 +25,15 @@
     <string name="retry">Обновить</string>
     <string name="history_line">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
-
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="albumName">Album Name</string>
+    <string name="year">Год</string>
+    <string name="yearName">Year Name</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="genreName">Genre Name</string>
+    <string name="countryName">Country Name</string>
+    <string name="TrackName">Track Name</string>
+    <string name="songTime">0:30</string>
 </resources>
