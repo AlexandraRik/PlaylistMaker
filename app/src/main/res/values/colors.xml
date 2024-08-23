@@ -13,6 +13,5 @@
     <color name="prime_neutral">#ffffff</color>
     <color name="light_blue">#9FBBF3</color>
     <color name="dark_gray">#818C99</color>
-
-
+    <color name="colorOnSecondary">@color/black</color>
 </resources>

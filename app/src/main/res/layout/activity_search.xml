@@ -93,6 +93,14 @@
             app:layout_constraintTop_toBottomOf="@id/noResultsImage"
             android:visibility="gone"/>
 
+        <ProgressBar android:id="@+id/progressBar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="108dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"/>
+
         <ImageView
             style="@style/ErrorImage"
             android:id="@+id/errorImage"
