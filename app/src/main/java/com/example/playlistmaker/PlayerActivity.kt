@@ -25,6 +25,20 @@ class PlayerActivity: AppCompatActivity() {
     private lateinit var handler: Handler
     private lateinit var songTime: TextView
 
+
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault())}
+
+    private val updateTimer = object : Runnable{
+            override fun run() {
+                if(playerState == STATE_PLAYING) {
+                    val currentPosition = mediaPlayer.currentPosition
+                    songTime.text = dateFormat.format(currentPosition)
+                    handler.postDelayed(this, TIME_DELAY)
+                }
+
+            }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.player_activity)
@@ -50,13 +64,13 @@ class PlayerActivity: AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         pausePlayer()
-        handler.removeCallbacks(updateTimer())
+        handler.removeCallbacks(updateTimer)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
-        handler.removeCallbacks(updateTimer())
+        handler.removeCallbacks(updateTimer)
     }
 
     private fun uploadSong(track: Track) {
@@ -110,12 +124,12 @@ class PlayerActivity: AppCompatActivity() {
         mediaPlayer.setOnPreparedListener {
             playImage.isEnabled = true
             playerState = STATE_PREPARED
-            handler.removeCallbacks(updateTimer())
+            handler.removeCallbacks(updateTimer)
         }
         mediaPlayer.setOnCompletionListener {
             playImage.setImageResource(R.drawable.play)
             playerState = STATE_PREPARED
-            handler.removeCallbacks(updateTimer())
+            handler.removeCallbacks(updateTimer)
             songTime.text = "00:00"
         }
     }
@@ -124,14 +138,14 @@ class PlayerActivity: AppCompatActivity() {
         mediaPlayer.start()
         playImage.setImageResource(R.drawable.pause)
         playerState = STATE_PLAYING
-        handler.post(updateTimer())
+        handler.post(updateTimer)
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playImage.setImageResource(R.drawable.play)
         playerState = STATE_PAUSED
-        handler.removeCallbacks(updateTimer())
+        handler.removeCallbacks(updateTimer)
     }
 
     private fun playbackControl() {
@@ -145,18 +159,6 @@ class PlayerActivity: AppCompatActivity() {
         }
     }
 
-    private fun updateTimer(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if(playerState == STATE_PLAYING) {
-                    val currentPosition = mediaPlayer.currentPosition
-                    songTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
-                    handler.postDelayed(this, TIME_DELAY)
-                }
-
-            }
-        }
-    }
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1

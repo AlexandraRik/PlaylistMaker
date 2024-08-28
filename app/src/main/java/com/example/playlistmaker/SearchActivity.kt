@@ -160,10 +160,13 @@ class SearchActivity : AppCompatActivity() {
         if (query.isNotEmpty()) {
             hidePlaceholders()
             loader()
+            recyclerView.visibility = View.GONE
+
 
         songService.search(query).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
                 progressBar.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 if (response.isSuccessful && response.body() != null) {
                     val songResults = response.body()!!.results
                     val tracks = songResults.map { songResult ->
@@ -224,6 +227,7 @@ class SearchActivity : AppCompatActivity() {
     }
     private fun loader() {
         progressBar.visibility = View.VISIBLE
+
     }
 
     private fun onTrackClick(track: Track) {
@@ -231,7 +235,7 @@ class SearchActivity : AppCompatActivity() {
         updateHistory()
         if (clickDebounce()) {
             val displayIntent = Intent(this, PlayerActivity::class.java)
-            displayIntent.putExtra("track", track)
+            displayIntent.putExtra(TRACK_KEY, track)
             startActivity(displayIntent)
         }
     }
@@ -270,6 +274,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val TEXT_VALUE_KEY = "textValue"
+        const val TRACK_KEY = "track"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
