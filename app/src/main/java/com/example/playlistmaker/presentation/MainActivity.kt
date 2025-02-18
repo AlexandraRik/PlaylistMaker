@@ -1,11 +1,11 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -43,5 +43,4 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    //Hello
 }
