@@ -1,8 +1,8 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.dto
 
 import java.io.Serializable
 
-public final data class Track(
+public final data class TrackDTO(
     val trackName: String,// Название композиции
     val artistName: String,// Имя исполнителя
     val trackTime: String,// Продолжительность трека

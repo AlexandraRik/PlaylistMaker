@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,8 +17,17 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.RetrofitClient.retrofit
-import com.example.playlistmaker.SongModel.Result
+import com.example.playlistmaker.Creator
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.network.SearchHistory
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.data.network.RetrofitClient.retrofit
+import com.example.playlistmaker.data.dto.SongSearchResponse
+import com.example.playlistmaker.data.network.SongApiService
+import com.example.playlistmaker.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.api.SongInteractor
+import com.example.playlistmaker.domain.impl.SearchHistoryInteractorImpl
+import com.example.playlistmaker.domain.models.Song
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,6 +53,9 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
 
     private val songService = retrofit.create(SongApiService::class.java)
+
+    private lateinit var searchHistoryInteractor: SearchHistoryInteractor
+    private lateinit var songInteractor: SongInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,11 +84,15 @@ class SearchActivity : AppCompatActivity() {
         retryButton = findViewById(R.id.retryButton)
         clearHistoryButton = findViewById(R.id.clearButton)
         progressBar = findViewById(R.id.progressBar)
-        searchHistory = SearchHistory(getSharedPreferences("search_prefs", MODE_PRIVATE))
+       // searchHistory = SearchHistory(getSharedPreferences("search_prefs", MODE_PRIVATE))
+        searchHistoryInteractor = Creator.provideHistoryInteractor(getSharedPreferences("search_prefs", MODE_PRIVATE))
         updateHistory()
+        songInteractor = Creator.provideSongsInteractor()
+
+
 
         clearHistoryButton.setOnClickListener {
-            searchHistory.clearHistory()
+            searchHistoryInteractor.clearHistory()
             updateHistory()
             hideHistory()
         }
@@ -156,6 +172,8 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setText(editTextValue)
     }
 
+
+
     private fun performSearch(query: String) {
         if (query.isNotEmpty()) {
             hidePlaceholders()
@@ -163,43 +181,40 @@ class SearchActivity : AppCompatActivity() {
             recyclerView.visibility = View.GONE
 
 
-        songService.search(query).enqueue(object : Callback<Result> {
-            override fun onResponse(call: Call<Result>, response: Response<Result>) {
-                progressBar.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
-                if (response.isSuccessful && response.body() != null) {
-                    val songResults = response.body()!!.results
-                    val tracks = songResults.map { songResult ->
-                        Track(
-                            trackName = songResult.trackName,
-                            artistName = songResult.artistName,
-                            trackTime = songResult.trackTimeMillis,
-                            artworkUrl100 = songResult.artworkUrl100,
-                            trackId = songResult.trackId,
-                            collectionName = songResult.collectionName,
-                            releaseDate = songResult.releaseDate,
-                            primaryGenreName = songResult.primaryGenreName,
-                            country = songResult.country,
-                            previewUrl = songResult.previewUrl
+            songInteractor.search(query, object : SongInteractor.SongConsumer {
+                override fun consume(foundSongs: List<Song>) {
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        recyclerView.visibility = View.VISIBLE
 
-                        )
+                        if (foundSongs.isEmpty()) {
+                            showNoResultsMessage()
+                        } else {
+                            val tracks = foundSongs.map { it.toTrack() }
+                            trackAdapter.updateTracks(tracks)
+                        }
                     }
-                    if (tracks.isEmpty()) {
-                        showNoResultsMessage()
-                    } else {
-                        trackAdapter.updateTracks(tracks)
-                    }
-                } else {
-                    showError()
                 }
-            }
-
-            override fun onFailure(call: Call<Result>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                showError()
-            }
-        })}
+            })
+        }
     }
+
+    fun Song.toTrack(): Track {
+        return Track(
+            trackName = this.trackName,
+            artistName = this.artistName,
+            trackTime = this.trackTimeMillis,
+            artworkUrl100 = this.artworkUrl100,
+            trackId = this.trackId,
+            collectionName = this.collectionName,
+            releaseDate = this.releaseDate,
+            primaryGenreName = this.primaryGenreName,
+            country = this.country,
+            previewUrl = this.previewUrl
+        )
+    }
+
+
 
 
 
@@ -231,7 +246,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun onTrackClick(track: Track) {
-        searchHistory.addTrack(track)
+        searchHistoryInteractor.addTrack(track)
         updateHistory()
         if (clickDebounce()) {
             val displayIntent = Intent(this, PlayerActivity::class.java)
@@ -241,8 +256,14 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateHistory() {
-        val history = searchHistory.getHistory()
-        historyAdapter.updateTracks(history)
+        //val history = searchHistory.getHistory()
+        searchHistoryInteractor.getHistory(object : SearchHistoryInteractor.HistoryConsumer {
+            override fun consume(history: List<Track>) {
+                runOnUiThread {
+                    historyAdapter.updateTracks(history)
+                }
+            }
+        })
     }
     private fun hideHistory() {
         historyRecyclerView.visibility = View.GONE
@@ -261,14 +282,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateHistoryVisibility() {
-        val history = searchHistory.getHistory()
-        if (inputEditText.hasFocus() && inputEditText.text.isEmpty() && history.isNotEmpty()) {
-            historyLine.visibility = View.VISIBLE
-            historyRecyclerView.visibility = View.VISIBLE
-            clearHistoryButton.visibility = View.VISIBLE
-        } else {
-            hideHistory()
-        }
+        searchHistoryInteractor.getHistory(object : SearchHistoryInteractor.HistoryConsumer {
+            override fun consume(history: List<Track>) {
+                runOnUiThread {
+
+                    historyAdapter.updateTracks(history)
+
+                    if (inputEditText.hasFocus() && inputEditText.text.isEmpty() && history.isNotEmpty()) {
+                        historyLine.visibility = View.VISIBLE
+                        historyRecyclerView.visibility = View.VISIBLE
+                        clearHistoryButton.visibility = View.VISIBLE
+                    } else {
+                        hideHistory()
+                    }
+                }
+            }
+        })
     }
 
 
