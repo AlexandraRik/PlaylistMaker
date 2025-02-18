@@ -47,8 +47,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/marginTop_setting"
-        android:layout_marginBottom="35dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="27dp"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/edges_padding_setting"
         android:paddingRight="@dimen/edges_padding_setting"
@@ -84,7 +84,7 @@
             style="@style/SettingTextView"
             android:layout_width="match_parent"
             android:text="@string/share"
-            android:layout_marginBottom="27dp"
+            android:layout_marginBottom="@dimen/marginTop_setting"
             android:drawableEnd="@drawable/share"
 
             />

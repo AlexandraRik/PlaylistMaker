@@ -2,6 +2,8 @@ package com.example.playlistmaker
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +39,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private lateinit var clearHistoryButton: Button
     private lateinit var historyRecyclerView: RecyclerView
+    private var handler = Handler(Looper.getMainLooper())
+    private lateinit var progressBar: ProgressBar
+    private var isClickAllowed = true
 
     private val songService = retrofit.create(SongApiService::class.java)
 
@@ -65,6 +71,7 @@ class SearchActivity : AppCompatActivity() {
         errorText1 = findViewById(R.id.errorText1)
         retryButton = findViewById(R.id.retryButton)
         clearHistoryButton = findViewById(R.id.clearButton)
+        progressBar = findViewById(R.id.progressBar)
         searchHistory = SearchHistory(getSharedPreferences("search_prefs", MODE_PRIVATE))
         updateHistory()
 
@@ -100,9 +107,12 @@ class SearchActivity : AppCompatActivity() {
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchRunnable = Runnable { performSearch(inputEditText.text.toString()) }
+                searchDebounce(searchRunnable)
                 editTextValue = s.toString()
                 clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
                 if (s.isNullOrEmpty()) {
+                    hidePlaceholders()
                     updateHistoryVisibility()
                     trackAdapter.updateTracks(emptyList())
                 } else {
@@ -117,13 +127,19 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 performSearch(inputEditText.text.toString())
+
                 true
             } else {
                 false
             }
         }
+
     }
 
+    private fun searchDebounce(searchRunnable: Runnable) {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
 
     private fun hideKeyboard() {
         val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -141,9 +157,16 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
-        hidePlaceholders()
+        if (query.isNotEmpty()) {
+            hidePlaceholders()
+            loader()
+            recyclerView.visibility = View.GONE
+
+
         songService.search(query).enqueue(object : Callback<Result> {
             override fun onResponse(call: Call<Result>, response: Response<Result>) {
+                progressBar.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
                 if (response.isSuccessful && response.body() != null) {
                     val songResults = response.body()!!.results
                     val tracks = songResults.map { songResult ->
@@ -156,7 +179,8 @@ class SearchActivity : AppCompatActivity() {
                             collectionName = songResult.collectionName,
                             releaseDate = songResult.releaseDate,
                             primaryGenreName = songResult.primaryGenreName,
-                            country = songResult.country
+                            country = songResult.country,
+                            previewUrl = songResult.previewUrl
 
                         )
                     }
@@ -171,9 +195,10 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Result>, t: Throwable) {
+                progressBar.visibility = View.GONE
                 showError()
             }
-        })
+        })}
     }
 
 
@@ -200,13 +225,19 @@ class SearchActivity : AppCompatActivity() {
         retryButton.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
+    private fun loader() {
+        progressBar.visibility = View.VISIBLE
+
+    }
 
     private fun onTrackClick(track: Track) {
         searchHistory.addTrack(track)
         updateHistory()
-        val displayIntent = Intent(this, PlayerActivity::class.java)
-        displayIntent.putExtra("track", track)
-        startActivity(displayIntent)
+        if (clickDebounce()) {
+            val displayIntent = Intent(this, PlayerActivity::class.java)
+            displayIntent.putExtra(TRACK_KEY, track)
+            startActivity(displayIntent)
+        }
     }
 
     private fun updateHistory() {
@@ -218,6 +249,15 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton.visibility = View.GONE
         historyLine.visibility = View.GONE
 
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     private fun updateHistoryVisibility() {
@@ -234,6 +274,9 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val TEXT_VALUE_KEY = "textValue"
+        const val TRACK_KEY = "track"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 }

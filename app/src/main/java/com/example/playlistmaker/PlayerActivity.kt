@@ -1,7 +1,10 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +17,27 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
+    private var playerState = STATE_DEFAULT
+    private lateinit var previewUrl: String
+    private var mediaPlayer = MediaPlayer()
+    private lateinit var playImage: ImageView
+    private lateinit var stopImage: ImageView
+    private lateinit var handler: Handler
+    private lateinit var songTime: TextView
+
+
+    private val dateFormat by lazy { SimpleDateFormat("mm:ss", Locale.getDefault())}
+
+    private val updateTimer = object : Runnable{
+            override fun run() {
+                if(playerState == STATE_PLAYING) {
+                    val currentPosition = mediaPlayer.currentPosition
+                    songTime.text = dateFormat.format(currentPosition)
+                    handler.postDelayed(this, TIME_DELAY)
+                }
+
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +54,26 @@ class PlayerActivity: AppCompatActivity() {
             intent.getSerializableExtra("track") as? Track
         }
         if (track != null) {
-            updloadSong(track)
+            uploadSong(track)
         }
+        songTime = findViewById<TextView>(R.id.songTime)
+        handler = Handler(Looper.getMainLooper());
+        preparePlayer()
     }
-    private fun updloadSong(track: Track) {
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+        handler.removeCallbacks(updateTimer)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        handler.removeCallbacks(updateTimer)
+    }
+
+    private fun uploadSong(track: Track) {
         val trackName = findViewById<TextView>(R.id.trackName)
         val artistName = findViewById<TextView>(R.id.artistName)
         val albumName = findViewById<TextView>(R.id.albumName)
@@ -42,6 +82,8 @@ class PlayerActivity: AppCompatActivity() {
         val countryName = findViewById<TextView>(R.id.countryName)
         val trackTime = findViewById<TextView>(R.id.trackTime)
         val trackImage = findViewById<ImageView>(R.id.trackImage)
+         playImage = findViewById<ImageView>(R.id.play_icon)
+         stopImage = findViewById<ImageView>(R.id.stop_icon)
         if (track.collectionName != null) {
             albumName.text = track.collectionName
             albumName.visibility = View.VISIBLE
@@ -51,8 +93,13 @@ class PlayerActivity: AppCompatActivity() {
         artistName.text = track.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
         releaseDate.text = getYear(track.releaseDate)
-        genreName.text = track.primaryGenreName
+       genreName.text = track.primaryGenreName
         countryName.text = track.country
+        previewUrl = track.previewUrl
+
+        playImage.setOnClickListener {
+            playbackControl()
+        }
 
 
         Glide.with(this)
@@ -71,6 +118,54 @@ class PlayerActivity: AppCompatActivity() {
         return year
     }
 
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playImage.isEnabled = true
+            playerState = STATE_PREPARED
+            handler.removeCallbacks(updateTimer)
+        }
+        mediaPlayer.setOnCompletionListener {
+            playImage.setImageResource(R.drawable.play)
+            playerState = STATE_PREPARED
+            handler.removeCallbacks(updateTimer)
+            songTime.text = "00:00"
+        }
+    }
 
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playImage.setImageResource(R.drawable.pause)
+        playerState = STATE_PLAYING
+        handler.post(updateTimer)
+    }
 
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playImage.setImageResource(R.drawable.play)
+        playerState = STATE_PAUSED
+        handler.removeCallbacks(updateTimer)
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+        private const val TIME_DELAY = 300L
+    }
 }
+
+

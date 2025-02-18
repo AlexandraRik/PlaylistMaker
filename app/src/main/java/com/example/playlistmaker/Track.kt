@@ -11,7 +11,8 @@ public final data class Track(
     val collectionName: String?,// Название альбома (collectionName) (если есть)
     val releaseDate: String,// Год релиза трека (releaseDate)
     val primaryGenreName: String,// Жанр трека (primaryGenreName)
-    val country: String// Страна исполнителя (country)
+    val country: String, // Страна исполнителя (country)
+    val previewUrl: String //Воспроизведение превью трека
 ): Serializable{
 
 }

@@ -21,15 +21,11 @@ fun updateTracks(newTracks: List<Track>) {
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = trackList[position]
-
         holder.bind(track)
         holder.itemView.setOnClickListener {
             trackListener.onTrackClick(track)
         }
-
     }
-
-
 
     override fun getItemCount(): Int = trackList.size
 
