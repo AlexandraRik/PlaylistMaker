@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.api.GetTrackInteractor
 import com.example.playlistmaker.domain.models.Song
 import com.example.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
@@ -29,7 +28,6 @@ class PlayerActivity: AppCompatActivity() {
     private lateinit var stopImage: ImageView
     private lateinit var handler: Handler
     private lateinit var songTime: TextView
-    private lateinit var getTrackInteractor: GetTrackInteractor
 
 
 
@@ -49,16 +47,13 @@ class PlayerActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.player_activity)
-        getTrackInteractor = Creator.provideGetTrackInteractor()
+
 
         val backButton = findViewById<ImageView>(R.id.back_button)
         backButton.setOnClickListener {
             super.onBackPressed()
         }
 
-
-
-        getTrackInteractor = Creator.provideGetTrackInteractor()
 
         val track: Track? = intent.getSerializableExtra("track") as? Track
 
