@@ -19,18 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.network.SearchHistory
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.data.network.RetrofitClient.retrofit
-import com.example.playlistmaker.data.dto.SongSearchResponse
 import com.example.playlistmaker.data.network.SongApiService
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.api.SongInteractor
-import com.example.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.models.Song
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var inputEditText: EditText
@@ -45,7 +39,6 @@ class SearchActivity : AppCompatActivity() {
     private var editTextValue: String? = null
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
-    private lateinit var searchHistory: SearchHistory
     private lateinit var clearHistoryButton: Button
     private lateinit var historyRecyclerView: RecyclerView
     private var handler = Handler(Looper.getMainLooper())
@@ -84,7 +77,6 @@ class SearchActivity : AppCompatActivity() {
         retryButton = findViewById(R.id.retryButton)
         clearHistoryButton = findViewById(R.id.clearButton)
         progressBar = findViewById(R.id.progressBar)
-       // searchHistory = SearchHistory(getSharedPreferences("search_prefs", MODE_PRIVATE))
         searchHistoryInteractor = Creator.provideHistoryInteractor(getSharedPreferences("search_prefs", MODE_PRIVATE))
         updateHistory()
         songInteractor = Creator.provideSongsInteractor()
@@ -256,7 +248,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateHistory() {
-        //val history = searchHistory.getHistory()
         searchHistoryInteractor.getHistory(object : SearchHistoryInteractor.HistoryConsumer {
             override fun consume(history: List<Track>) {
                 runOnUiThread {
