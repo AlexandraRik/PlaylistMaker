@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 class App: Application() {
 
     var darkTheme: Boolean = false
-    private val sharedPrefs: SharedPreferences by lazy {
+    val sharedPrefs: SharedPreferences by lazy {
         getSharedPreferences("app_settings", MODE_PRIVATE)
     }
 
@@ -20,20 +20,18 @@ class App: Application() {
             darkTheme = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
             sharedPrefs.edit().putBoolean("dark_theme", darkTheme).apply()
         }
-        switchTheme(darkTheme)
+        applyTheme(darkTheme)
     }
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        sharedPrefs.edit().putBoolean("dark_theme", darkThemeEnabled).apply()
-
+    private fun applyTheme(isDark: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
+            if (isDark) {
                 AppCompatDelegate.MODE_NIGHT_YES
             } else {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
     }
+
 
 
 }

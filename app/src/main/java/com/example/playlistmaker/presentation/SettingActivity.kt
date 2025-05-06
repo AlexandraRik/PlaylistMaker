@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,10 +7,18 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.example.playlistmaker.domain.interactor.SettingsInteractor
+import com.example.playlistmaker.Creator
+
+
 
 class SettingActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
+    private lateinit var settingsInteractor: SettingsInteractor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
@@ -19,10 +27,13 @@ class SettingActivity : AppCompatActivity() {
         val helpButton = findViewById<TextView>(R.id.help_button)
         val userButton = findViewById<TextView>(R.id.user_button)
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.switch_off)
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        settingsInteractor = Creator.provideSettingsInteractor(application as App)
+        themeSwitcher.isChecked = settingsInteractor.darkTheme
 
-        themeSwitcher.setOnCheckedChangeListener{ switcher, checked -> (applicationContext as App).switchTheme(checked) }
-
+        //themeSwitcher.setOnCheckedChangeListener{ switcher, checked -> (applicationContext as App).switchTheme(checked) }
+        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            settingsInteractor.switchTheme(isChecked)
+        }
 
         backButton.setOnClickListener {
             super.onBackPressed()

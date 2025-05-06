@@ -1,11 +1,12 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
-import TrackViewHolder
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.models.Track
 
-class TrackAdapter(private var trackList: List<Track>,val trackListener: TrackListener):
+class TrackAdapter(private var trackList: List<Track>, val trackListener: TrackListener):
     RecyclerView.Adapter<TrackViewHolder>() {
 
 
@@ -29,7 +30,7 @@ fun updateTracks(newTracks: List<Track>) {
 
     override fun getItemCount(): Int = trackList.size
 
-    fun interface TrackListener {
+    fun interface    TrackListener {
         fun onTrackClick(track: Track)
     }
 }
